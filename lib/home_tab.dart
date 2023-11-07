@@ -36,7 +36,7 @@ class _HomeTabState extends State<HomeTab> {
   Widget _tabBar(BuildContext context) {
     // return Center(child: Text('hi'));
     return DefaultTabController(
-      initialIndex: 1,
+      initialIndex: 0,
       length: 2,
       child: Scaffold(
         appBar: AppBar(
@@ -44,10 +44,10 @@ class _HomeTabState extends State<HomeTab> {
           child: TabBar(
             tabs: <Widget>[
               Tab(
-                icon: Icon(Icons.cloud_outlined),
+                text: 'Projects',
               ),
               Tab(
-                icon: Icon(Icons.beach_access_sharp),
+                text: 'People',
               )
             ],
           ),
@@ -55,10 +55,10 @@ class _HomeTabState extends State<HomeTab> {
         body: const TabBarView(
           children: <Widget>[
             Center(
-              child: Text("It's cloudy here"),
+              child: Text("Add projects here"),
             ),
             Center(
-              child: Text("It's rainy here"),
+              child: Text("Add people here"),
             )
           ],
         ),
