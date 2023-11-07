@@ -16,7 +16,7 @@ class _SearchTabState extends State<SearchTab> {
   Widget build(context) {
     return Center(
       child: Container(
-        child: Text('Happy Page'),
+        child: Text('Search Page'),
       ),
     );
   }

@@ -7,6 +7,8 @@ import 'package:flutter/material.dart';
 
 import 'home_tab.dart';
 import 'search_tab.dart';
+import 'chat_tab.dart';
+import 'profile_tab.dart';
 import 'widgets.dart';
 
 void main() => runApp(const MyApp());
@@ -90,11 +92,19 @@ class _PlatformAdaptingHomePageState extends State<PlatformAdaptingHomePage> {
           BottomNavigationBarItem(
             label: SearchTab.title,
             icon: SearchTab.iosIcon,
+          ),
+          BottomNavigationBarItem(
+            label: ChatTab.title,
+            icon: ChatTab.iosIcon,
+          ),
+          BottomNavigationBarItem(
+            label: ProfileTab.title,
+            icon: ProfileTab.iosIcon,
           )
         ],
       ),
       tabBuilder: (context, index) {
-        assert(index <= 1 && index >= 0, 'Unexpected tab index: $index');
+        assert(index <= 3 && index >= 0, 'Unexpected tab index: $index');
         return switch (index) {
           0 => CupertinoTabView(
               defaultTitle: HomeTab.title,
@@ -103,6 +113,14 @@ class _PlatformAdaptingHomePageState extends State<PlatformAdaptingHomePage> {
           1 => CupertinoTabView(
               defaultTitle: SearchTab.title,
               builder: (context) => SearchTab(),
+            ),
+          2 => CupertinoTabView(
+              defaultTitle: ChatTab.title,
+              builder: (context) => ChatTab(),
+            ),
+          3 => CupertinoTabView(
+              defaultTitle: ProfileTab.title,
+              builder: (context) => ProfileTab(),
             ),
           _ => const SizedBox.shrink(),
         };
@@ -151,6 +169,24 @@ class _AndroidDrawer extends StatelessWidget {
               Navigator.pop(context);
               Navigator.push<void>(context,
                   MaterialPageRoute(builder: (context) => SearchTab()));
+            },
+          ),
+          ListTile(
+            leading: ChatTab.androidIcon,
+            title: const Text(ChatTab.title),
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.push<void>(
+                  context, MaterialPageRoute(builder: (context) => ChatTab()));
+            },
+          ),
+          ListTile(
+            leading: ProfileTab.androidIcon,
+            title: const Text(ProfileTab.title),
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.push<void>(context,
+                  MaterialPageRoute(builder: (context) => ProfileTab()));
             },
           )
         ],
