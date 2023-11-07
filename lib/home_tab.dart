@@ -33,54 +33,34 @@ class _HomeTabState extends State<HomeTab> {
     super.initState();
   }
 
-  Widget _listBuilder(BuildContext context, int index) {
-    return SafeArea(
-      top: false,
-      bottom: false,
-      child: Card(
-        elevation: 1.5,
-        margin: const EdgeInsets.fromLTRB(6, 12, 6, 0),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(4),
-        ),
-        child: InkWell(
-          // Make it splash on Android. It would happen automatically if this
-          // was a real card but this is just a demo. Skip the splash on iOS.
-          onTap: defaultTargetPlatform == TargetPlatform.iOS ? null : () {},
-          child: Padding(
-            padding: const EdgeInsets.all(12.0),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                CircleAvatar(
-                  backgroundColor: colors[index],
-                  child: Text(
-                    titles[index].substring(0, 1),
-                    style: const TextStyle(color: Colors.white),
-                  ),
-                ),
-                const Padding(padding: EdgeInsets.only(left: 16)),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        titles[index],
-                        style: const TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                      const Padding(padding: EdgeInsets.only(top: 8)),
-                      Text(
-                        contents[index],
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
+  Widget _tabBar(BuildContext context) {
+    // return Center(child: Text('hi'));
+    return DefaultTabController(
+      initialIndex: 1,
+      length: 2,
+      child: Scaffold(
+        appBar: AppBar(
+            flexibleSpace: const SafeArea(
+          child: TabBar(
+            tabs: <Widget>[
+              Tab(
+                icon: Icon(Icons.cloud_outlined),
+              ),
+              Tab(
+                icon: Icon(Icons.beach_access_sharp),
+              )
+            ],
           ),
+        )),
+        body: const TabBarView(
+          children: <Widget>[
+            Center(
+              child: Text("It's cloudy here"),
+            ),
+            Center(
+              child: Text("It's rainy here"),
+            )
+          ],
         ),
       ),
     );
@@ -88,24 +68,17 @@ class _HomeTabState extends State<HomeTab> {
 
   Widget _buildAndroid(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(HomeTab.title),
-      ),
-      body: ListView.builder(
-        itemCount: _itemsLength,
-        itemBuilder: _listBuilder,
-      ),
-    );
+        appBar: AppBar(
+          title: const Text(HomeTab.title),
+        ),
+        body: _tabBar(context));
   }
 
   Widget _buildIos(BuildContext context) {
     return CupertinoPageScaffold(
-      navigationBar: const CupertinoNavigationBar(),
-      child: ListView.builder(
-        itemCount: _itemsLength,
-        itemBuilder: _listBuilder,
-      ),
-    );
+        navigationBar: const CupertinoNavigationBar(),
+        // child: Text('hi')
+        child: _tabBar(context));
   }
 
   @override
@@ -114,5 +87,19 @@ class _HomeTabState extends State<HomeTab> {
       androidBuilder: _buildAndroid,
       iosBuilder: _buildIos,
     );
+  }
+}
+
+class ProjectsPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Text('Projects');
+  }
+}
+
+class PeoplePage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Text('People');
   }
 }
