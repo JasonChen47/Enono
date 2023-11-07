@@ -7,9 +7,9 @@ import 'utils.dart';
 import 'widgets.dart';
 
 class HomeTab extends StatefulWidget {
-  static const title = 'News';
-  static const androidIcon = Icon(Icons.library_books);
-  static const iosIcon = Icon(CupertinoIcons.news);
+  static const title = 'Home';
+  static const androidIcon = Icon(Icons.home);
+  static const iosIcon = Icon(CupertinoIcons.home);
 
   const HomeTab({super.key});
 
@@ -86,13 +86,6 @@ class _HomeTabState extends State<HomeTab> {
     );
   }
 
-  // Widget build(BuildContext context) {
-  //   return Center(
-  //     child: Container(
-  //       child: Text('Home Page'),
-  //     ),
-  //   );
-  // }
   Widget _buildAndroid(BuildContext context) {
     return Scaffold(
       appBar: AppBar(

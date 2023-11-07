@@ -6,7 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'home_tab.dart';
-import 'songs_tab.dart';
+import 'search_tab.dart';
 import 'widgets.dart';
 
 void main() => runApp(const MyApp());
@@ -62,13 +62,13 @@ class _PlatformAdaptingHomePageState extends State<PlatformAdaptingHomePage> {
   // the platform toggles.
   //
   // This isn't needed for apps that doesn't toggle platforms while running.
-  final songsTabKey = GlobalKey();
+  // final songsTabKey = GlobalKey();
 
   // In Material, this app uses the hamburger menu paradigm and flatly lists
   // all 4 possible tabs. This drawer is injected into the songs tab which is
   // actually building the scaffold around the drawer.
   Widget _buildAndroidHomePage(BuildContext context) {
-    return SongsTab();
+    return HomeTab();
   }
 
   // On iOS, the app uses a bottom tab paradigm. Here, each tab view sits inside
@@ -84,12 +84,12 @@ class _PlatformAdaptingHomePageState extends State<PlatformAdaptingHomePage> {
       tabBar: CupertinoTabBar(
         items: const [
           BottomNavigationBarItem(
-            label: SongsTab.title,
-            icon: SongsTab.iosIcon,
-          ),
-          BottomNavigationBarItem(
             label: HomeTab.title,
             icon: HomeTab.iosIcon,
+          ),
+          BottomNavigationBarItem(
+            label: SearchTab.title,
+            icon: SearchTab.iosIcon,
           )
         ],
       ),
@@ -97,12 +97,12 @@ class _PlatformAdaptingHomePageState extends State<PlatformAdaptingHomePage> {
         assert(index <= 1 && index >= 0, 'Unexpected tab index: $index');
         return switch (index) {
           0 => CupertinoTabView(
-              defaultTitle: SongsTab.title,
-              builder: (context) => SongsTab(),
+              defaultTitle: HomeTab.title,
+              builder: (context) => HomeTab(),
             ),
           1 => CupertinoTabView(
-              defaultTitle: HomeTab.title,
-              builder: (context) => const HomeTab(),
+              defaultTitle: SearchTab.title,
+              builder: (context) => SearchTab(),
             ),
           _ => const SizedBox.shrink(),
         };
@@ -138,19 +138,19 @@ class _AndroidDrawer extends StatelessWidget {
             ),
           ),
           ListTile(
-            leading: SongsTab.androidIcon,
-            title: const Text(SongsTab.title),
+            leading: HomeTab.androidIcon,
+            title: const Text(HomeTab.title),
             onTap: () {
               Navigator.pop(context);
             },
           ),
           ListTile(
-            leading: HomeTab.androidIcon,
-            title: const Text(HomeTab.title),
+            leading: SearchTab.androidIcon,
+            title: const Text(SearchTab.title),
             onTap: () {
               Navigator.pop(context);
               Navigator.push<void>(context,
-                  MaterialPageRoute(builder: (context) => const HomeTab()));
+                  MaterialPageRoute(builder: (context) => SearchTab()));
             },
           )
         ],
