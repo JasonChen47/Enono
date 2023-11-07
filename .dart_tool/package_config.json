@@ -38,6 +38,12 @@
       "languageVersion": "2.19"
     },
     {
+      "name": "english_words",
+      "rootUri": "file:///Users/johnsmith/.pub-cache/hosted/pub.dev/english_words-4.0.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "fake_async",
       "rootUri": "file:///Users/johnsmith/.pub-cache/hosted/pub.dev/fake_async-1.3.1",
       "packageUri": "lib/",
@@ -54,6 +60,12 @@
       "rootUri": "file:///Users/johnsmith/.pub-cache/hosted/pub.dev/flutter_lints-2.0.3",
       "packageUri": "lib/",
       "languageVersion": "2.19"
+    },
+    {
+      "name": "flutter_lorem",
+      "rootUri": "file:///Users/johnsmith/.pub-cache/hosted/pub.dev/flutter_lorem-2.0.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
     },
     {
       "name": "flutter_test",
@@ -152,7 +164,7 @@
       "languageVersion": "3.1"
     }
   ],
-  "generated": "2023-11-04T23:57:39.398273Z",
+  "generated": "2023-11-07T04:57:18.111302Z",
   "generator": "pub",
   "generatorVersion": "3.1.5"
 }

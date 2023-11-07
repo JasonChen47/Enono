@@ -1,125 +1,160 @@
+// Copyright 2020 The Flutter team. All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(const MyApp());
-}
+import 'home_tab.dart';
+import 'songs_tab.dart';
+import 'widgets.dart';
+
+void main() => runApp(const MyApp());
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
-  Widget build(BuildContext context) {
+  Widget build(context) {
+    // Either Material or Cupertino widgets work in either Material or Cupertino
+    // Apps.
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Adaptive Music App',
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a blue toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        // Use the green theme for Material widgets.
+        primarySwatch: Colors.green,
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      darkTheme: ThemeData.dark(),
+      builder: (context, child) {
+        return CupertinoTheme(
+          // Instead of letting Cupertino widgets auto-adapt to the Material
+          // theme (which is green), this app will use a different theme
+          // for Cupertino (which is blue by default).
+          data: const CupertinoThemeData(),
+          child: Material(child: child),
+        );
+      },
+      home: const PlatformAdaptingHomePage(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  final String title;
+// Shows a different type of scaffold depending on the platform.
+//
+// This file has the most amount of non-sharable code since it behaves the most
+// differently between the platforms.
+//
+// These differences are also subjective and have more than one 'right' answer
+// depending on the app and content.
+class PlatformAdaptingHomePage extends StatefulWidget {
+  const PlatformAdaptingHomePage({super.key});
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<PlatformAdaptingHomePage> createState() =>
+      _PlatformAdaptingHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+class _PlatformAdaptingHomePageState extends State<PlatformAdaptingHomePage> {
+  // This app keeps a global key for the songs tab because it owns a bunch of
+  // data. Since changing platform re-parents those tabs into different
+  // scaffolds, keeping a global key to it lets this app keep that tab's data as
+  // the platform toggles.
+  //
+  // This isn't needed for apps that doesn't toggle platforms while running.
+  final songsTabKey = GlobalKey();
 
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
+  // In Material, this app uses the hamburger menu paradigm and flatly lists
+  // all 4 possible tabs. This drawer is injected into the songs tab which is
+  // actually building the scaffold around the drawer.
+  Widget _buildAndroidHomePage(BuildContext context) {
+    return SongsTab();
+  }
+
+  // On iOS, the app uses a bottom tab paradigm. Here, each tab view sits inside
+  // a tab in the tab scaffold. The tab scaffold also positions the tab bar
+  // in a row at the bottom.
+  //
+  // An important thing to note is that while a Material Drawer can display a
+  // large number of items, a tab bar cannot. To illustrate one way of adjusting
+  // for this, the app folds its fourth tab (the settings page) into the
+  // third tab. This is a common pattern on iOS.
+  Widget _buildIosHomePage(BuildContext context) {
+    return CupertinoTabScaffold(
+      tabBar: CupertinoTabBar(
+        items: const [
+          BottomNavigationBarItem(
+            label: SongsTab.title,
+            icon: SongsTab.iosIcon,
+          ),
+          BottomNavigationBarItem(
+            label: HomeTab.title,
+            icon: HomeTab.iosIcon,
+          )
+        ],
+      ),
+      tabBuilder: (context, index) {
+        assert(index <= 1 && index >= 0, 'Unexpected tab index: $index');
+        return switch (index) {
+          0 => CupertinoTabView(
+              defaultTitle: SongsTab.title,
+              builder: (context) => SongsTab(),
+            ),
+          1 => CupertinoTabView(
+              defaultTitle: HomeTab.title,
+              builder: (context) => const HomeTab(),
+            ),
+          _ => const SizedBox.shrink(),
+        };
+      },
+    );
   }
 
   @override
+  Widget build(context) {
+    return PlatformWidget(
+      androidBuilder: _buildAndroidHomePage,
+      iosBuilder: _buildIosHomePage,
+    );
+  }
+}
+
+class _AndroidDrawer extends StatelessWidget {
+  @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
-    return Scaffold(
-      appBar: AppBar(
-        // TRY THIS: Try changing the color here to a specific color (to
-        // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
-        // change color while the other colors stay the same.
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-      ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          //
-          // TRY THIS: Invoke "debug painting" (choose the "Toggle Debug Paint"
-          // action in the IDE, or press "p" in the console), to see the
-          // wireframe for each widget.
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
+    return Drawer(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          DrawerHeader(
+            decoration: const BoxDecoration(color: Colors.green),
+            child: Padding(
+              padding: const EdgeInsets.only(bottom: 20),
+              child: Icon(
+                Icons.account_circle,
+                color: Colors.green.shade800,
+                size: 96,
+              ),
             ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-          ],
-        ),
+          ),
+          ListTile(
+            leading: SongsTab.androidIcon,
+            title: const Text(SongsTab.title),
+            onTap: () {
+              Navigator.pop(context);
+            },
+          ),
+          ListTile(
+            leading: HomeTab.androidIcon,
+            title: const Text(HomeTab.title),
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.push<void>(context,
+                  MaterialPageRoute(builder: (context) => const HomeTab()));
+            },
+          )
+        ],
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
