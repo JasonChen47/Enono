@@ -70,13 +70,48 @@ class _HomeTabState extends State<HomeTab> {
   }
 }
 
+// Projects Page
 class ProjectsPage extends StatelessWidget {
-  @override
+  Widget _listBuilder(BuildContext context, int index) {
+    return Padding(
+      padding: const EdgeInsets.all(10.0),
+      child: Column(
+        children: [
+          Card(
+            elevation: 1.5,
+            // margin: const EdgeInsets.fromLTRB(15, 12, 15, 0),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(4),
+            ),
+            child: Center(
+                child: Padding(
+              padding: const EdgeInsets.all(100.0),
+              child: Text('Insert image here'),
+            )),
+          ),
+          Align(
+            alignment: Alignment.centerLeft,
+            child:
+                Text('Header', style: TextStyle(fontWeight: FontWeight.bold)),
+          ),
+          Align(
+            alignment: Alignment.centerLeft,
+            child: Text('Description blah blah blah'),
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget build(BuildContext context) {
-    return const Text('Projects');
+    return ListView.builder(
+      itemCount: PeoplePage._itemsLength,
+      itemBuilder: _listBuilder,
+    );
   }
 }
 
+// People Page
 class PeoplePage extends StatefulWidget {
   static const _itemsLength = 20;
 
