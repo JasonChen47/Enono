@@ -33,32 +33,14 @@ class _SearchTabState extends State<SearchTab> {
         navigationBar: const CupertinoNavigationBar(
           middle: Text('Search'),
         ),
-        // child: Container(
-        //   child: Padding(
-        //     padding: const EdgeInsets.all(16.0),
-        //     child: CupertinoSearchTextField(
-        //       controller: textController,
-        //       placeholder: 'Search',
-        //     ),
-        //   ),
-        // ),
         child: SafeArea(
           child: Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(12.0),
             child: CupertinoSearchTextField(
-                //       controller: textController,
-                //       placeholder: 'Search',
-                ),
+              controller: textController,
+              placeholder: 'Search',
+            ),
           ),
         ));
   }
-
-  // @override
-  // Widget build(context) {
-  //   return Center(
-  //     child: Container(
-  //       child: Text('Search Page'),
-  //     ),
-  //   );
-  // }
 }

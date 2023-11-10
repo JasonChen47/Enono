@@ -14,10 +14,15 @@ class ChatTab extends StatefulWidget {
 class _ChatTabState extends State<ChatTab> {
   @override
   Widget build(context) {
-    return Center(
-      child: Container(
-        child: Text('Chat Page'),
-      ),
-    );
+    return CupertinoPageScaffold(
+        navigationBar: const CupertinoNavigationBar(
+          middle: Text('Chat'),
+        ),
+        child: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: Text('hi'),
+          ),
+        ));
   }
 }

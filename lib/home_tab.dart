@@ -58,7 +58,10 @@ class _HomeTabState extends State<HomeTab> {
 
   Widget _buildIos(BuildContext context) {
     return CupertinoPageScaffold(
-        navigationBar: const CupertinoNavigationBar(), child: _tabBar(context));
+        navigationBar: const CupertinoNavigationBar(
+          middle: Text('Feed'),
+        ),
+        child: _tabBar(context));
   }
 
   @override
