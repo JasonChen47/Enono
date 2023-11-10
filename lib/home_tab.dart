@@ -83,18 +83,18 @@ class ProjectsPage extends StatelessWidget {
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(4),
             ),
-            child: Center(
+            child: const Center(
                 child: Padding(
-              padding: const EdgeInsets.all(100.0),
+              padding: EdgeInsets.all(100.0),
               child: Text('Insert image here'),
             )),
           ),
-          Align(
+          const Align(
             alignment: Alignment.centerLeft,
             child:
                 Text('Header', style: TextStyle(fontWeight: FontWeight.bold)),
           ),
-          Align(
+          const Align(
             alignment: Alignment.centerLeft,
             child: Text('Description blah blah blah'),
           ),
@@ -178,7 +178,7 @@ class _PeoplePageState extends State<PeoplePage>
                       ),
                       const Padding(padding: EdgeInsets.only(top: 8)),
                       Text(
-                        contents[index],
+                        titles[index],
                       ),
                     ],
                   ),
