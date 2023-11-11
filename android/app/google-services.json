@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "740899552773",
+    "project_id": "enono-4747",
+    "storage_bucket": "enono-4747.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:740899552773:android:12cae5832bf4b0fa9e666c",
+        "android_client_info": {
+          "package_name": "com.example.enono"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD6AZcHQz7oYuLLQVomddxzJrkH0lJsgBo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

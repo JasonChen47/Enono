@@ -80,18 +80,6 @@ class ProjectsPage extends StatelessWidget {
       padding: const EdgeInsets.all(10.0),
       child: Column(
         children: [
-          // Card(
-          //   elevation: 1.5,
-          //   // margin: const EdgeInsets.fromLTRB(15, 12, 15, 0),
-          //   shape: RoundedRectangleBorder(
-          //     borderRadius: BorderRadius.circular(4),
-          //   ),
-          //   child: const Center(
-          //       child: Padding(
-          //     padding: EdgeInsets.all(100.0),
-          //     child: Text('Insert image here'),
-          //   )),
-          // ),
           Card(
             child: Column(
               children: <Widget>[
@@ -103,12 +91,12 @@ class ProjectsPage extends StatelessWidget {
                   padding: EdgeInsets.all(8.0),
                   child: Column(
                     children: [
-                      const Align(
+                      Align(
                         alignment: Alignment.centerLeft,
                         child: Text('Header',
                             style: TextStyle(fontWeight: FontWeight.bold)),
                       ),
-                      const Align(
+                      Align(
                         alignment: Alignment.centerLeft,
                         child: Text('Description blah blah blah'),
                       ),
