@@ -388,7 +388,7 @@ class _ConversationListState extends State<ConversationList> {
               child: Row(
                 children: <Widget>[
                   CircleAvatar(
-                    backgroundImage: NetworkImage(widget.imageUrl),
+                    backgroundImage: AssetImage(widget.imageUrl),
                     maxRadius: 30,
                   ),
                   SizedBox(
@@ -438,7 +438,7 @@ class _ConversationListState extends State<ConversationList> {
   }
 }
 
-Widget listBuilder(
+Widget listBuilderPeople(
     BuildContext context, int index, List<String> titles, List<Color> colors) {
   return SafeArea(
     top: false,
@@ -456,12 +456,8 @@ Widget listBuilder(
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              CircleAvatar(
-                backgroundColor: colors[index],
-                child: Text(
-                  titles[index].substring(0, 1),
-                  style: const TextStyle(color: Colors.white),
-                ),
+              const CircleAvatar(
+                backgroundImage: AssetImage('assets/ryan.jpeg'),
               ),
               const Padding(padding: EdgeInsets.only(left: 16)),
               Expanded(
@@ -518,7 +514,7 @@ Widget listBuilderProjects(
               Container(
                 width: 100, // Adjust the width to your desired size
                 height: 100, // Adjust the height to your desired size
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   shape:
                       BoxShape.rectangle, // Use BoxShape.rectangle for a square
                   image: DecorationImage(

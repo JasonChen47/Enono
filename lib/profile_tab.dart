@@ -74,10 +74,10 @@ class _ProfileTabState extends State<ProfileTab> {
                   ),
                   SizedBox(height: 10),
                   Text(
-                    'john.doe@example.com', // Replace with user's email or additional info
+                    'Artist, Writer, Musician', // Replace with user's email or additional info
                     style: TextStyle(
                       fontSize: 16,
-                      color: Colors.grey,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
                   SizedBox(height: 20),
@@ -97,8 +97,64 @@ class _ProfileTabState extends State<ProfileTab> {
 }
 
 class AboutPage extends StatelessWidget {
+  List<String> skills = [
+    'Canoeing',
+    'Writing',
+    'App Dev',
+    'Cooking',
+    'Dancing'
+  ];
+  List<String> resources = ['House', 'MRI Machine', 'Phone'];
+
   Widget build(BuildContext context) {
-    return Text('About Page');
+    return Padding(
+      padding: EdgeInsets.all(8.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'My goal is to improve the wellbeing of dolphins around the world',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              // Makes the text bold
+              fontSize: 15, // Adjusts the font size
+            ),
+          ),
+          SizedBox(height: 15),
+          Text(
+            'Skills',
+            textAlign: TextAlign.left,
+            style: TextStyle(
+              fontSize: 15,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          Wrap(
+            spacing: 8.0, // gap between adjacent chips
+            runSpacing: 4.0, // gap between lines
+            children: <Widget>[
+              for (var skill in skills) Chip(label: Text(skill))
+            ],
+          ),
+          SizedBox(height: 15),
+          Text(
+            'Resources',
+            textAlign: TextAlign.left,
+            style: TextStyle(
+              fontSize: 15,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          Wrap(
+            spacing: 8.0, // gap between adjacent chips
+            runSpacing: 4.0, // gap between lines
+            children: <Widget>[
+              for (var resource in resources) Chip(label: Text(resource))
+            ],
+          ),
+        ],
+      ),
+    );
   }
 }
 

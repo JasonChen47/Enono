@@ -80,26 +80,43 @@ class ProjectsPage extends StatelessWidget {
       padding: const EdgeInsets.all(10.0),
       child: Column(
         children: [
+          // Card(
+          //   elevation: 1.5,
+          //   // margin: const EdgeInsets.fromLTRB(15, 12, 15, 0),
+          //   shape: RoundedRectangleBorder(
+          //     borderRadius: BorderRadius.circular(4),
+          //   ),
+          //   child: const Center(
+          //       child: Padding(
+          //     padding: EdgeInsets.all(100.0),
+          //     child: Text('Insert image here'),
+          //   )),
+          // ),
           Card(
-            elevation: 1.5,
-            // margin: const EdgeInsets.fromLTRB(15, 12, 15, 0),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(4),
+            child: Column(
+              children: <Widget>[
+                Image.asset(
+                  'assets/skateboard.jpg', // Replace with your asset image path
+                  fit: BoxFit.cover, // Adjust the fit as needed
+                ),
+                const Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Column(
+                    children: [
+                      const Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text('Header',
+                            style: TextStyle(fontWeight: FontWeight.bold)),
+                      ),
+                      const Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text('Description blah blah blah'),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             ),
-            child: const Center(
-                child: Padding(
-              padding: EdgeInsets.all(100.0),
-              child: Text('Insert image here'),
-            )),
-          ),
-          const Align(
-            alignment: Alignment.centerLeft,
-            child:
-                Text('Header', style: TextStyle(fontWeight: FontWeight.bold)),
-          ),
-          const Align(
-            alignment: Alignment.centerLeft,
-            child: Text('Description blah blah blah'),
           ),
         ],
       ),
@@ -141,66 +158,13 @@ class _PeoplePageState extends State<PeoplePage>
     super.initState();
   }
 
-  Widget _listBuilder(BuildContext context, int index) {
-    return SafeArea(
-      top: false,
-      bottom: false,
-      child: Card(
-        elevation: 1.5,
-        margin: const EdgeInsets.fromLTRB(6, 12, 6, 0),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(4),
-        ),
-        child: InkWell(
-          // Make it splash on Android. It would happen automatically if this
-          // was a real card but this is just a demo. Skip the splash on iOS.
-          onTap: defaultTargetPlatform == TargetPlatform.iOS ? null : () {},
-          child: Padding(
-            padding: const EdgeInsets.all(12.0),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                CircleAvatar(
-                  backgroundColor: colors[index],
-                  child: Text(
-                    titles[index].substring(0, 1),
-                    style: const TextStyle(color: Colors.white),
-                  ),
-                ),
-                const Padding(padding: EdgeInsets.only(left: 16)),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        titles[index],
-                        style: const TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                      const Padding(padding: EdgeInsets.only(top: 8)),
-                      Text(
-                        titles[index],
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     super.build(context);
     return ListView.builder(
       itemCount: PeoplePage._itemsLength,
       itemBuilder: (BuildContext context, int index) {
-        return listBuilder(
+        return listBuilderPeople(
             context, index, titles, colors); // Using the listBuilder function
       },
     );

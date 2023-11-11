@@ -101,7 +101,7 @@ class _ChatTabState extends State<ChatTab> {
                   return ConversationList(
                     name: chatUsers[index].name,
                     messageText: chatUsers[index].messageText,
-                    imageUrl: chatUsers[index].imageURL,
+                    imageUrl: "assets/ryan.jpeg",
                     time: chatUsers[index].time,
                     isMessageRead: (index == 0 || index == 3) ? true : false,
                   );
