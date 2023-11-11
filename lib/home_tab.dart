@@ -199,7 +199,10 @@ class _PeoplePageState extends State<PeoplePage>
     super.build(context);
     return ListView.builder(
       itemCount: PeoplePage._itemsLength,
-      itemBuilder: _listBuilder,
+      itemBuilder: (BuildContext context, int index) {
+        return listBuilder(
+            context, index, titles, colors); // Using the listBuilder function
+      },
     );
   }
 }

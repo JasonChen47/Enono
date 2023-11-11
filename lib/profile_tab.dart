@@ -1,6 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_lorem/flutter_lorem.dart';
+
+import 'utils.dart';
+import 'widgets.dart';
 
 class ProfileTab extends StatefulWidget {
   static const title = 'Profile';
@@ -12,6 +16,36 @@ class ProfileTab extends StatefulWidget {
 }
 
 class _ProfileTabState extends State<ProfileTab> {
+  Widget _tabBar(BuildContext context) {
+    return DefaultTabController(
+      initialIndex: 0,
+      length: 2,
+      child: Scaffold(
+        appBar: AppBar(
+            flexibleSpace: const SafeArea(
+          child: TabBar(
+            tabs: <Widget>[
+              Tab(
+                text: 'About',
+              ),
+              Tab(
+                text: 'Projects',
+              )
+            ],
+          ),
+        )),
+        body: TabBarView(
+          children: <Widget>[
+            Center(
+              child: AboutPage(),
+            ),
+            Center(child: ProjectsPage())
+          ],
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(context) {
     return CupertinoPageScaffold(
@@ -53,10 +87,55 @@ class _ProfileTabState extends State<ProfileTab> {
                     },
                     child: Text('Edit Profile'),
                   ),
+                  Expanded(child: _tabBar(context)),
                 ],
               ),
             ),
           ),
         ));
+  }
+}
+
+class AboutPage extends StatelessWidget {
+  Widget build(BuildContext context) {
+    return Text('About Page');
+  }
+}
+
+// Projects Page
+class ProjectsPage extends StatefulWidget {
+  static const _itemsLength = 20;
+  @override
+  State<ProjectsPage> createState() => _ProjectsPageState();
+}
+
+class _ProjectsPageState extends State<ProjectsPage>
+    with AutomaticKeepAliveClientMixin {
+  late final List<Color> colors;
+  late final List<String> titles;
+  late final List<String> contents;
+
+  @override
+  bool get wantKeepAlive => true;
+
+  @override
+  void initState() {
+    colors = getRandomColors(ProjectsPage._itemsLength);
+    titles = List.generate(
+        ProjectsPage._itemsLength, (index) => generateRandomHeadline());
+    contents = List.generate(
+        ProjectsPage._itemsLength, (index) => lorem(paragraphs: 1, words: 24));
+    super.initState();
+  }
+
+  Widget build(BuildContext context) {
+    super.build(context);
+    return ListView.builder(
+      itemCount: ProjectsPage._itemsLength,
+      itemBuilder: (BuildContext context, int index) {
+        return listBuilderProjects(
+            context, index, titles, colors); // Using the listBuilder function
+      },
+    );
   }
 }

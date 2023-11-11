@@ -83,16 +83,6 @@ class _ChatTabState extends State<ChatTab> {
       navigationBar: const CupertinoNavigationBar(
         middle: Text('Chat'),
       ),
-      // child: SafeArea(
-      //   child: Padding(
-      //     padding: const EdgeInsets.all(12.0),
-      //     child: CupertinoSearchTextField(
-      //       controller: textController,
-      //       placeholder: 'Search',
-      //     ),
-      //   ),
-      // ),
-
       child: SafeArea(
         child: Column(
           children: [
@@ -107,7 +97,6 @@ class _ChatTabState extends State<ChatTab> {
               child: ListView.builder(
                 itemCount: chatUsers.length,
                 shrinkWrap: true,
-                padding: EdgeInsets.only(top: 16),
                 itemBuilder: (context, index) {
                   return ConversationList(
                     name: chatUsers[index].name,

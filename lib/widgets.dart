@@ -437,3 +437,122 @@ class _ConversationListState extends State<ConversationList> {
     );
   }
 }
+
+Widget listBuilder(
+    BuildContext context, int index, List<String> titles, List<Color> colors) {
+  return SafeArea(
+    top: false,
+    bottom: false,
+    child: Card(
+      elevation: 1.5,
+      margin: const EdgeInsets.fromLTRB(6, 12, 6, 0),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(4),
+      ),
+      child: InkWell(
+        onTap: defaultTargetPlatform == TargetPlatform.iOS ? null : () {},
+        child: Padding(
+          padding: const EdgeInsets.all(12.0),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              CircleAvatar(
+                backgroundColor: colors[index],
+                child: Text(
+                  titles[index].substring(0, 1),
+                  style: const TextStyle(color: Colors.white),
+                ),
+              ),
+              const Padding(padding: EdgeInsets.only(left: 16)),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      titles[index],
+                      style: const TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    const Padding(padding: EdgeInsets.only(top: 8)),
+                    Text(
+                      titles[index],
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    ),
+  );
+}
+
+Widget listBuilderProjects(
+    BuildContext context, int index, List<String> titles, List<Color> colors) {
+  return SafeArea(
+    top: false,
+    bottom: false,
+    child: Card(
+      elevation: 1.5,
+      margin: const EdgeInsets.fromLTRB(6, 12, 6, 0),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(4),
+      ),
+      child: InkWell(
+        onTap: defaultTargetPlatform == TargetPlatform.iOS ? null : () {},
+        child: Padding(
+          padding: const EdgeInsets.all(12.0),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // CircleAvatar(
+              //   backgroundColor: colors[index],
+              //   child: Text(
+              //     titles[index].substring(0, 1),
+              //     style: const TextStyle(color: Colors.white),
+              //   ),
+              // ),
+              Container(
+                width: 100, // Adjust the width to your desired size
+                height: 100, // Adjust the height to your desired size
+                decoration: BoxDecoration(
+                  shape:
+                      BoxShape.rectangle, // Use BoxShape.rectangle for a square
+                  image: DecorationImage(
+                    image: AssetImage(
+                        'assets/skateboard.jpg'), // Provide the image path
+                    fit: BoxFit
+                        .fitWidth, // Adjust the fit as per your requirement
+                  ),
+                ),
+              ),
+
+              const Padding(padding: EdgeInsets.only(left: 16)),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      titles[index],
+                      style: const TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    const Padding(padding: EdgeInsets.only(top: 8)),
+                    Text(
+                      titles[index],
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    ),
+  );
+}
