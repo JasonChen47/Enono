@@ -112,9 +112,19 @@ class ProjectsPage extends StatelessWidget {
   }
 
   Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: PeoplePage._itemsLength,
-      itemBuilder: _listBuilder,
+    return SafeArea(
+      child: Scaffold(
+        body: ListView.builder(
+          itemCount: PeoplePage._itemsLength,
+          itemBuilder: _listBuilder,
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            print('hi');
+          },
+          child: const Icon(Icons.add),
+        ),
+      ),
     );
   }
 }

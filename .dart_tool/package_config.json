@@ -140,6 +140,12 @@
       "languageVersion": "3.0"
     },
     {
+      "name": "go_router",
+      "rootUri": "file:///Users/johnsmith/.pub-cache/hosted/pub.dev/go_router-12.1.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.19"
+    },
+    {
       "name": "http_parser",
       "rootUri": "file:///Users/johnsmith/.pub-cache/hosted/pub.dev/http_parser-4.0.2",
       "packageUri": "lib/",
@@ -156,6 +162,12 @@
       "rootUri": "file:///Users/johnsmith/.pub-cache/hosted/pub.dev/lints-2.1.1",
       "packageUri": "lib/",
       "languageVersion": "3.0"
+    },
+    {
+      "name": "logging",
+      "rootUri": "file:///Users/johnsmith/.pub-cache/hosted/pub.dev/logging-1.2.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.19"
     },
     {
       "name": "matcher",
@@ -254,7 +266,7 @@
       "languageVersion": "3.1"
     }
   ],
-  "generated": "2023-11-11T17:14:54.356422Z",
+  "generated": "2023-11-11T18:17:39.583788Z",
   "generator": "pub",
   "generatorVersion": "3.1.5"
 }
