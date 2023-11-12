@@ -6,6 +6,8 @@ import 'package:flutter_lorem/flutter_lorem.dart';
 import 'utils.dart';
 import 'widgets.dart';
 
+import 'new_project.dart';
+
 class HomeTab extends StatefulWidget {
   static const title = 'Home';
   static const androidIcon = Icon(Icons.home);
@@ -120,7 +122,10 @@ class ProjectsPage extends StatelessWidget {
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            print('hi');
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => NewProject()),
+            );
           },
           child: const Icon(Icons.add),
         ),
