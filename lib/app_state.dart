@@ -36,7 +36,11 @@ class AppState {
   }
 
   void writeEntryToFirebase(Entry entry) {
-    print('TODO: AppState.writeEntryToFirebase');
+    FirebaseFirestore.instance.collection('Entries').add(<String, String>{
+      'title': entry.title,
+      'date': entry.date.toString(),
+      'text': entry.text,
+    });
   }
 
   Future<void> _listenForEntries() async {

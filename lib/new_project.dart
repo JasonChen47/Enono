@@ -2,20 +2,18 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_lorem/flutter_lorem.dart';
+import 'dart:math';
 
 import 'utils.dart';
 import 'widgets.dart';
 
-class NewProject extends StatefulWidget {
-  static const title = 'Profile';
-  static const androidIcon = Icon(Icons.person);
-  static const iosIcon = Icon(CupertinoIcons.person);
+import 'entry.dart';
+import 'project_form.dart';
+import 'app_state.dart';
 
-  @override
-  State<NewProject> createState() => _NewProjectState();
-}
-
-class _NewProjectState extends State<NewProject> {
+class NewProject extends StatelessWidget {
+  final AppState state;
+  NewProject({super.key, required this.state});
   @override
   Widget build(context) {
     return CupertinoPageScaffold(
@@ -23,6 +21,12 @@ class _NewProjectState extends State<NewProject> {
           middle: Text('New Project'),
         ),
         child: SafeArea(
-            child: Center(child: Text('Insert stuff for new project here'))));
+          child: ProjectForm(
+            key: Key('${Random().nextDouble()}'),
+            onSubmit: (e) {
+              state.writeEntryToFirebase(e);
+            },
+          ),
+        ));
   }
 }

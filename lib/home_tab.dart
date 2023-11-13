@@ -7,19 +7,28 @@ import 'utils.dart';
 import 'widgets.dart';
 
 import 'new_project.dart';
+import 'app_state.dart';
 
-class HomeTab extends StatefulWidget {
+// class HomeTab extends StatefulWidget {
+//   static const title = 'Home';
+//   static const androidIcon = Icon(Icons.home);
+//   static const iosIcon = Icon(CupertinoIcons.home);
+
+//   final AppState state;
+//   HomeTab({super.key, required this.state});
+
+//   @override
+//   State<HomeTab> createState() => _HomeTabState();
+// }
+
+// class _HomeTabState extends State<HomeTab> {
+class HomeTab extends StatelessWidget {
   static const title = 'Home';
   static const androidIcon = Icon(Icons.home);
   static const iosIcon = Icon(CupertinoIcons.home);
 
-  const HomeTab({super.key});
-
-  @override
-  State<HomeTab> createState() => _HomeTabState();
-}
-
-class _HomeTabState extends State<HomeTab> {
+  final AppState state;
+  HomeTab({super.key, required this.state});
   Widget _tabBar(BuildContext context) {
     return DefaultTabController(
       initialIndex: 0,
@@ -41,7 +50,9 @@ class _HomeTabState extends State<HomeTab> {
         body: TabBarView(
           children: <Widget>[
             Center(
-              child: ProjectsPage(),
+              child: ProjectsPage(
+                state: this.state,
+              ),
             ),
             Center(child: PeoplePage())
           ],
@@ -77,6 +88,8 @@ class _HomeTabState extends State<HomeTab> {
 
 // Projects Page
 class ProjectsPage extends StatelessWidget {
+  final AppState state;
+  ProjectsPage({super.key, required this.state});
   Widget _listBuilder(BuildContext context, int index) {
     return Padding(
       padding: const EdgeInsets.all(10.0),
@@ -124,7 +137,10 @@ class ProjectsPage extends StatelessWidget {
           onPressed: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => NewProject()),
+              MaterialPageRoute(
+                  builder: (context) => NewProject(
+                        state: state,
+                      )),
             );
           },
           child: const Icon(Icons.add),
@@ -157,7 +173,7 @@ class _PeoplePageState extends State<PeoplePage>
     titles = List.generate(
         PeoplePage._itemsLength, (index) => generateRandomHeadline());
     contents = List.generate(
-        PeoplePage._itemsLength, (index) => lorem(paragraphs: 1, words: 24));
+        PeoplePage._itemsLength, (index) => generateRandomHeadline());
     super.initState();
   }
 

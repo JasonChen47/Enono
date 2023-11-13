@@ -43,23 +43,28 @@ class TabsView extends StatelessWidget {
           child: Material(child: child),
         );
       },
-      home: const PlatformAdaptingHomePage(),
+      home: PlatformAdaptingHomePage(
+        state: state,
+      ),
     );
   }
 }
 
 // Shows a different type of scaffold depending on the platform.
-class PlatformAdaptingHomePage extends StatefulWidget {
-  const PlatformAdaptingHomePage({super.key});
+// class PlatformAdaptingHomePage extends StatefulWidget {
+//   const PlatformAdaptingHomePage({super.key});
 
-  @override
-  State<PlatformAdaptingHomePage> createState() =>
-      _PlatformAdaptingHomePageState();
-}
+//   @override
+//   State<PlatformAdaptingHomePage> createState() =>
+//       _PlatformAdaptingHomePageState();
+// }
 
-class _PlatformAdaptingHomePageState extends State<PlatformAdaptingHomePage> {
+class PlatformAdaptingHomePage extends StatelessWidget {
+  final AppState state;
+  PlatformAdaptingHomePage({super.key, required this.state});
+
   Widget _buildAndroidHomePage(BuildContext context) {
-    return HomeTab();
+    return HomeTab(state: state);
   }
 
   Widget _buildIosHomePage(BuildContext context) {
@@ -89,7 +94,9 @@ class _PlatformAdaptingHomePageState extends State<PlatformAdaptingHomePage> {
         return switch (index) {
           0 => CupertinoTabView(
               defaultTitle: HomeTab.title,
-              builder: (context) => HomeTab(),
+              builder: (context) => HomeTab(
+                state: state,
+              ),
             ),
           1 => CupertinoTabView(
               defaultTitle: SearchTab.title,
