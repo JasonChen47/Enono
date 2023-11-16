@@ -6,6 +6,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
+import 'app_state.dart';
+
 /// A simple widget that builds different things on different platforms.
 class PlatformWidget extends StatelessWidget {
   const PlatformWidget({
@@ -486,8 +488,8 @@ Widget listBuilderPeople(
   );
 }
 
-Widget listBuilderProjects(
-    BuildContext context, int index, List<String> titles, List<Color> colors) {
+Widget listBuilderProjects(BuildContext context, int index, List<String> titles,
+    List<Color> colors, AppState state) {
   return SafeArea(
     top: false,
     bottom: false,
@@ -504,13 +506,6 @@ Widget listBuilderProjects(
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // CircleAvatar(
-              //   backgroundColor: colors[index],
-              //   child: Text(
-              //     titles[index].substring(0, 1),
-              //     style: const TextStyle(color: Colors.white),
-              //   ),
-              // ),
               Container(
                 width: 100, // Adjust the width to your desired size
                 height: 100, // Adjust the height to your desired size
@@ -525,7 +520,6 @@ Widget listBuilderProjects(
                   ),
                 ),
               ),
-
               const Padding(padding: EdgeInsets.only(left: 16)),
               Expanded(
                 child: Column(
