@@ -8,6 +8,7 @@ import 'widgets.dart';
 
 import 'new_project.dart';
 import 'app_state.dart';
+import 'entry.dart';
 
 // class HomeTab extends StatefulWidget {
 //   static const title = 'Home';
@@ -90,7 +91,7 @@ class HomeTab extends StatelessWidget {
 class ProjectsPage extends StatelessWidget {
   final AppState state;
   ProjectsPage({super.key, required this.state});
-  Widget _listBuilder(BuildContext context, int index) {
+  Widget _listBuilder(BuildContext context, int index, List<Entry> entries) {
     return Padding(
       padding: const EdgeInsets.all(10.0),
       child: Column(
@@ -102,18 +103,18 @@ class ProjectsPage extends StatelessWidget {
                   'assets/skateboard.jpg', // Replace with your asset image path
                   fit: BoxFit.cover, // Adjust the fit as needed
                 ),
-                const Padding(
+                Padding(
                   padding: EdgeInsets.all(8.0),
                   child: Column(
                     children: [
                       Align(
                         alignment: Alignment.centerLeft,
-                        child: Text('Header',
+                        child: Text(entries[index].title,
                             style: TextStyle(fontWeight: FontWeight.bold)),
                       ),
                       Align(
                         alignment: Alignment.centerLeft,
-                        child: Text('Description blah blah blah'),
+                        child: Text(entries[index].text),
                       ),
                     ],
                   ),
@@ -128,24 +129,33 @@ class ProjectsPage extends StatelessWidget {
 
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Scaffold(
-        body: ListView.builder(
-          itemCount: PeoplePage._itemsLength,
-          itemBuilder: _listBuilder,
-        ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => NewProject(
-                        state: state,
-                      )),
+      child: StreamBuilder<List<Entry>>(
+          stream: state.entries,
+          initialData: const [],
+          builder: (context, snapshot) {
+            final allEntries = snapshot.data;
+            return Scaffold(
+              body: ListView.builder(
+                itemCount: allEntries?.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return _listBuilder(context, index,
+                      allEntries!); // Using the listBuilder function
+                },
+              ),
+              floatingActionButton: FloatingActionButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => NewProject(
+                              state: state,
+                            )),
+                  );
+                },
+                child: const Icon(Icons.add),
+              ),
             );
-          },
-          child: const Icon(Icons.add),
-        ),
-      ),
+          }),
     );
   }
 }

@@ -488,8 +488,9 @@ Widget listBuilderPeople(
   );
 }
 
-Widget listBuilderProjects(BuildContext context, int index, List<String> titles,
-    List<Color> colors, AppState state) {
+Widget listBuilderProjects(
+    BuildContext context, int index, List<String> titles, List<Color> colors) {
+  // final allEntries = snapshot.data;
   return SafeArea(
     top: false,
     bottom: false,
