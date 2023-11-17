@@ -84,6 +84,7 @@ class _ProfileTabState extends State<ProfileTab> {
                   ElevatedButton(
                     onPressed: () {
                       // Action when the button is pressed
+                      print('hi');
                     },
                     child: Text('Edit Profile'),
                   ),

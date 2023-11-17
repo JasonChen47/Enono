@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'dart:io';
 
 import 'entry.dart';
 import 'app_state.dart';
@@ -14,6 +16,27 @@ class ProjectForm extends StatefulWidget {
 }
 
 class _ProjectFormState extends State<ProjectForm> {
+  File? _imageFile;
+
+  Future<void> _getImageFromGallery() async {
+    try {
+      final imagePicker = ImagePicker();
+      print('ImagePicker');
+      final pickedImage =
+          await imagePicker.pickImage(source: ImageSource.gallery);
+
+      print('Awaiting the source');
+
+      if (pickedImage != null) {
+        setState(() {
+          _imageFile = File(pickedImage.path);
+        });
+      }
+    } catch (e) {
+      print('Error selecting image: $e');
+    }
+  }
+
   final _formKey = GlobalKey<FormState>();
 
   late String title;
@@ -64,6 +87,19 @@ class _ProjectFormState extends State<ProjectForm> {
                   text = value;
                   return null;
                 },
+              ),
+              SizedBox(height: 10),
+              FilledButton(
+                onPressed: _getImageFromGallery,
+                child: Icon(Icons.add_a_photo),
+              ),
+              SizedBox(height: 10),
+              Expanded(
+                child: Center(
+                  child: _imageFile == null
+                      ? Text('No image selected.')
+                      : Image.file(_imageFile!),
+                ),
               ),
               Center(
                 child: Padding(
