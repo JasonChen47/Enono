@@ -19,21 +19,13 @@ class _ProjectFormState extends State<ProjectForm> {
   File? _imageFile;
 
   Future<void> _getImageFromGallery() async {
-    try {
-      final imagePicker = ImagePicker();
-      print('ImagePicker');
-      final pickedImage =
-          await imagePicker.pickImage(source: ImageSource.gallery);
-
-      print('Awaiting the source');
-
-      if (pickedImage != null) {
-        setState(() {
-          _imageFile = File(pickedImage.path);
-        });
-      }
-    } catch (e) {
-      print('Error selecting image: $e');
+    final imagePicker = ImagePicker();
+    final pickedImage =
+        await imagePicker.pickImage(source: ImageSource.gallery);
+    if (pickedImage != null) {
+      setState(() {
+        _imageFile = File(pickedImage.path);
+      });
     }
   }
 
@@ -112,6 +104,7 @@ class _ProjectFormState extends State<ProjectForm> {
                           title: title,
                           text: text,
                           date: date,
+                          imageFile: _imageFile,
                         );
 
                         widget.onSubmit(entry);

@@ -17,16 +17,18 @@ class NewProject extends StatelessWidget {
   @override
   Widget build(context) {
     return CupertinoPageScaffold(
-        navigationBar: const CupertinoNavigationBar(
-          middle: Text('New Project'),
+      navigationBar: const CupertinoNavigationBar(
+        middle: Text('New Project'),
+      ),
+      child: SafeArea(
+        child: ProjectForm(
+          key: Key('${Random().nextDouble()}'),
+          onSubmit: (e) {
+            state.writeEntryToFirebase(e);
+          },
         ),
-        child: SafeArea(
-          child: ProjectForm(
-            key: Key('${Random().nextDouble()}'),
-            onSubmit: (e) {
-              state.writeEntryToFirebase(e);
-            },
-          ),
-        ));
+      ),
+      resizeToAvoidBottomInset: false,
+    );
   }
 }
