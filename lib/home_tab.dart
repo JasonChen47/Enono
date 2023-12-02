@@ -99,10 +99,21 @@ class ProjectsPage extends StatelessWidget {
           Card(
             child: Column(
               children: <Widget>[
-                Image.asset(
-                  'assets/skateboard.jpg', // Replace with your asset image path
-                  fit: BoxFit.cover, // Adjust the fit as needed
-                ),
+                // Image.asset(
+                //   'assets/skateboard.jpg', // Replace with your asset image path
+                //   fit: BoxFit.cover, // Adjust the fit as needed
+                // ),
+
+                entries[index].imageURL != null
+                    ?
+                    //               Image.network(valueOrDefault<String>(
+                    // entries[index].imageURL!,
+                    // 'https://picsum.photos/seed/513/600',
+                    //  ),)
+                    FadeInImage(
+                        image: NetworkImage(entries[index].imageURL!),
+                        placeholder: AssetImage('assets/skateboard.jpg'))
+                    : Text('Image not found'),
                 Padding(
                   padding: EdgeInsets.all(8.0),
                   child: Column(
@@ -110,6 +121,11 @@ class ProjectsPage extends StatelessWidget {
                       Align(
                         alignment: Alignment.centerLeft,
                         child: Text(entries[index].title,
+                            style: TextStyle(fontWeight: FontWeight.bold)),
+                      ),
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(entries[index].imageURL!,
                             style: TextStyle(fontWeight: FontWeight.bold)),
                       ),
                       Align(

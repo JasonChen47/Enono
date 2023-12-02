@@ -104,7 +104,7 @@ class _ProjectFormState extends State<ProjectForm> {
                           title: title,
                           text: text,
                           date: date,
-                          imageFile: _imageFile,
+                          imageURL: _imageFile!.path,
                         );
 
                         widget.onSubmit(entry);

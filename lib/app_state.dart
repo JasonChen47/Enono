@@ -21,6 +21,7 @@ class AppState {
           date: '10/09/2022',
           text: lorem,
           title: '[Example] My Journal Entry',
+          imageURL: "https://picsum.photos/id/237/200/300",
         )
       ]);
     });
@@ -49,63 +50,22 @@ class AppState {
     //   'date': entry.date.toString(),
     //   'text': entry.text,
     // });
-    if (entry.imageFile != null) {
-      //   // Upload the image to Firebase Storage
-      //   print('entered');
-
-      //   //Get a reference to storage root
-      //   Reference referenceRoot = FirebaseStorage.instance.ref();
-      //   Reference referenceDirImages = referenceRoot.child('images');
-      //   print('made reference to storage root');
-
-      //   //Create a reference for the image to be stored
-      //   Reference referenceImageToUpload = referenceDirImages.child('name');
-      //   print('made reference for image to be stored');
-
-      //   try {
-      //     //Store the file
-      //     await referenceImageToUpload.putFile(File(entry.imageFile!.path));
-      //     //Success: get the download URL
-      //     imageUrl = await referenceImageToUpload.getDownloadURL();
-      //   } catch (error) {
-      //     //Some error occurred
-      //   }
-      //   print('store the file');
-      // print('entered');
-      // final _id = Random().nextInt(999);
-
-      // final _ref = FirebaseStorage.instance
-      //     .ref("playground/images/")
-      //     .child("image-$_id.jpg");
-      // print('reference');
-      // final UploadTask _task =
-      //     (await _ref.putFile(File(entry.imageFile!.path))) as UploadTask;
-      // _task.whenComplete(() {
-      //   print("image uploaded");
-      // });
-
-      // final imageUrl = await _task.snapshot.ref.getDownloadURL();
-      // print('getdownload');
-// no need of the file extension, the name will do fine.
-      // Rest of the code
-
+    if (entry.imageURL != null) {
       // Upload the image to Firebase Storage
       Reference storageReference = FirebaseStorage.instance
           .ref()
           .child('images')
           .child('entry_image.jpg');
-      UploadTask uploadTask = storageReference.putFile(entry.imageFile!);
-
+      UploadTask uploadTask = storageReference.putFile(File(entry.imageURL!));
       // Get the download URL of the uploaded image
       String imageUrl = await (await uploadTask).ref.getDownloadURL();
-
       print('get download URL');
       // Save entry details along with the image URL to Firestore
       await FirebaseFirestore.instance.collection('Entries').add({
         'title': entry.title,
         'date': entry.date.toString(),
         'text': entry.text,
-        'image_url': imageUrl, // Save image URL in Firestore
+        'imageurl': imageUrl, // Save image URL in Firestore
       });
     } else {
       // If no image, save entry details without the image URL
@@ -129,6 +89,7 @@ class AppState {
           date: data['date'] as String,
           text: data['text'] as String,
           title: data['title'] as String,
+          imageURL: data['imageURL'] as String,
         );
       }).toList();
 

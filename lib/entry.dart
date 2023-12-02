@@ -4,12 +4,14 @@ class Entry {
   final String date;
   final String text;
   final String title;
-  File? imageFile;
+  // File? imageFile;
+  String? imageURL;
 
   Entry({
     required this.date,
     required this.text,
     required this.title,
-    this.imageFile,
+    // this.imageFile,
+    this.imageURL,
   });
 }
