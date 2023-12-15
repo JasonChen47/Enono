@@ -15,15 +15,16 @@ class AppState {
   // String imageUrl = '';
 
   AppState() {
+    print('again');
     _entriesStreamController = StreamController.broadcast(onListen: () {
-      _entriesStreamController.add([
-        Entry(
-          date: '10/09/2022',
-          text: lorem,
-          title: '[Example] My Journal Entry',
-          imageURL: "https://picsum.photos/id/237/200/300",
-        )
-      ]);
+      // _entriesStreamController.add([
+      //   Entry(
+      //     date: '10/09/2022',
+      //     text: lorem,
+      //     title: '[Example] My Journal Entry',
+      //     imageURL: "https://picsum.photos/id/237/200/300",
+      //   )
+      // ]);
     });
   }
 
@@ -55,7 +56,7 @@ class AppState {
       Reference storageReference = FirebaseStorage.instance
           .ref()
           .child('images')
-          .child('entry_image.jpg');
+          .child(DateTime.now().toString() + 'entry_image.jpg');
       UploadTask uploadTask = storageReference.putFile(File(entry.imageURL!));
       // Get the download URL of the uploaded image
       String imageUrl = await (await uploadTask).ref.getDownloadURL();
@@ -89,7 +90,7 @@ class AppState {
           date: data['date'] as String,
           text: data['text'] as String,
           title: data['title'] as String,
-          imageURL: data['imageURL'] as String,
+          imageURL: data['imageurl'] as String,
         );
       }).toList();
 

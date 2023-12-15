@@ -23,13 +23,22 @@ import 'entry.dart';
 // }
 
 // class _HomeTabState extends State<HomeTab> {
-class HomeTab extends StatelessWidget {
+class HomeTab extends StatefulWidget {
   static const title = 'Home';
   static const androidIcon = Icon(Icons.home);
   static const iosIcon = Icon(CupertinoIcons.home);
 
   final AppState state;
   HomeTab({super.key, required this.state});
+
+  @override
+  State<HomeTab> createState() => _HomeTabState();
+}
+
+class _HomeTabState extends State<HomeTab> with AutomaticKeepAliveClientMixin {
+  @override
+  bool get wantKeepAlive => true;
+
   Widget _tabBar(BuildContext context) {
     return DefaultTabController(
       initialIndex: 0,
@@ -52,7 +61,7 @@ class HomeTab extends StatelessWidget {
           children: <Widget>[
             Center(
               child: ProjectsPage(
-                state: this.state,
+                state: this.widget.state,
               ),
             ),
             Center(child: PeoplePage())
@@ -88,9 +97,19 @@ class HomeTab extends StatelessWidget {
 }
 
 // Projects Page
-class ProjectsPage extends StatelessWidget {
+class ProjectsPage extends StatefulWidget {
   final AppState state;
   ProjectsPage({super.key, required this.state});
+
+  @override
+  State<ProjectsPage> createState() => _ProjectsPageState();
+}
+
+class _ProjectsPageState extends State<ProjectsPage>
+    with AutomaticKeepAliveClientMixin {
+  @override
+  bool get wantKeepAlive => true;
+
   Widget _listBuilder(BuildContext context, int index, List<Entry> entries) {
     return Padding(
       padding: const EdgeInsets.all(10.0),
@@ -99,20 +118,28 @@ class ProjectsPage extends StatelessWidget {
           Card(
             child: Column(
               children: <Widget>[
-                // Image.asset(
-                //   'assets/skateboard.jpg', // Replace with your asset image path
-                //   fit: BoxFit.cover, // Adjust the fit as needed
-                // ),
-
                 entries[index].imageURL != null
                     ?
-                    //               Image.network(valueOrDefault<String>(
-                    // entries[index].imageURL!,
-                    // 'https://picsum.photos/seed/513/600',
-                    //  ),)
-                    FadeInImage(
-                        image: NetworkImage(entries[index].imageURL!),
-                        placeholder: AssetImage('assets/skateboard.jpg'))
+                    // Will first display loading image as the network image loads.
+                    // If the network image is invalid, then it will display text
+                    // that says 'failed to load image'
+                    Image.network(
+                        entries[index].imageURL!,
+                        errorBuilder: (BuildContext context, Object exception,
+                            StackTrace? stackTrace) {
+                          // Your error handling widget, for example, show a placeholder or an error message
+                          return Text('Failed to load image');
+                        },
+                      )
+                    // FadeInImage(
+                    //     image: NetworkImage(entries[index].imageURL!),
+                    //     placeholder: AssetImage('assets/skateboard.jpg'),
+                    //     imageErrorBuilder: (BuildContext context,
+                    //         Object exception, StackTrace? stackTrace) {
+                    //       // Your error handling widget, for example, show a placeholder or an error message
+                    //       return Text('Failed to load image');
+                    //     },
+                    //   )
                     : Text('Image not found'),
                 Padding(
                   padding: EdgeInsets.all(8.0),
@@ -146,7 +173,7 @@ class ProjectsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: StreamBuilder<List<Entry>>(
-          stream: state.entries,
+          stream: widget.state.entries,
           initialData: const [],
           builder: (context, snapshot) {
             final allEntries = snapshot.data;
@@ -164,7 +191,7 @@ class ProjectsPage extends StatelessWidget {
                     context,
                     MaterialPageRoute(
                         builder: (context) => NewProject(
-                              state: state,
+                              state: widget.state,
                             )),
                   );
                 },
