@@ -1,7 +1,9 @@
+import 'package:enono/project_detail.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_lorem/flutter_lorem.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 import 'utils.dart';
 import 'widgets.dart';
@@ -10,19 +12,6 @@ import 'new_project.dart';
 import 'app_state.dart';
 import 'entry.dart';
 
-// class HomeTab extends StatefulWidget {
-//   static const title = 'Home';
-//   static const androidIcon = Icon(Icons.home);
-//   static const iosIcon = Icon(CupertinoIcons.home);
-
-//   final AppState state;
-//   HomeTab({super.key, required this.state});
-
-//   @override
-//   State<HomeTab> createState() => _HomeTabState();
-// }
-
-// class _HomeTabState extends State<HomeTab> {
 class HomeTab extends StatefulWidget {
   static const title = 'Home';
   static const androidIcon = Icon(Icons.home);
@@ -115,54 +104,51 @@ class _ProjectsPageState extends State<ProjectsPage>
       padding: const EdgeInsets.all(10.0),
       child: Column(
         children: [
-          Card(
-            child: Column(
-              children: <Widget>[
-                entries[index].imageURL != null
-                    ?
-                    // Will first display loading image as the network image loads.
-                    // If the network image is invalid, then it will display text
-                    // that says 'failed to load image'
-                    Image.network(
-                        entries[index].imageURL!,
-                        errorBuilder: (BuildContext context, Object exception,
-                            StackTrace? stackTrace) {
-                          // Your error handling widget, for example, show a placeholder or an error message
-                          return Text('Failed to load image');
-                        },
-                      )
-                    // FadeInImage(
-                    //     image: NetworkImage(entries[index].imageURL!),
-                    //     placeholder: AssetImage('assets/skateboard.jpg'),
-                    //     imageErrorBuilder: (BuildContext context,
-                    //         Object exception, StackTrace? stackTrace) {
-                    //       // Your error handling widget, for example, show a placeholder or an error message
-                    //       return Text('Failed to load image');
-                    //     },
-                    //   )
-                    : Text('Image not found'),
-                Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: Column(
-                    children: [
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(entries[index].title,
-                            style: TextStyle(fontWeight: FontWeight.bold)),
-                      ),
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(entries[index].imageURL!,
-                            style: TextStyle(fontWeight: FontWeight.bold)),
-                      ),
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(entries[index].text),
-                      ),
-                    ],
+          GestureDetector(
+            onTap: () {
+              // Navigate to the second screen when the card is tapped
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => ProjectDetail(
+                        state: widget.state, entry: entries[index])),
+              );
+            },
+            child: Card(
+              child: Column(
+                children: <Widget>[
+                  entries[index].imageURL != null
+                      ? CachedNetworkImage(
+                          imageUrl: entries[index].imageURL!,
+                          placeholder: (context, url) =>
+                              CircularProgressIndicator(),
+                          errorWidget: (context, url, error) =>
+                              Icon(Icons.error),
+                        )
+                      : Text('Image not found'),
+                  Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Column(
+                      children: [
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(entries[index].title,
+                              style: TextStyle(fontWeight: FontWeight.bold)),
+                        ),
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(entries[index].imageURL!,
+                              style: TextStyle(fontWeight: FontWeight.bold)),
+                        ),
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(entries[index].text),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ],
