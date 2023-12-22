@@ -1,13 +1,17 @@
+import 'dart:io';
+
 class Project {
   final String title;
+  final String date;
   final String description;
-  final List<String> skills;
-  final List<String> resources;
+  final List<dynamic> skills;
+  String? imageURL;
 
   Project({
     required this.title,
+    required this.date,
     required this.description,
     required this.skills,
-    required this.resources,
+    this.imageURL,
   });
 }

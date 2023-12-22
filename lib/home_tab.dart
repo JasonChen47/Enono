@@ -10,7 +10,7 @@ import 'widgets.dart';
 
 import 'new_project.dart';
 import 'app_state.dart';
-import 'entry.dart';
+import 'project.dart';
 
 class HomeTab extends StatefulWidget {
   static const title = 'Home';
@@ -25,6 +25,19 @@ class HomeTab extends StatefulWidget {
 }
 
 class _HomeTabState extends State<HomeTab> with AutomaticKeepAliveClientMixin {
+  late final AppState _appState; // Declare AppState variable
+
+  @override
+  void initState() {
+    super.initState();
+    _appState = widget.state; // Initialize AppState from widget parameter
+    _startListeningForEntries(); // Start listening for entries
+  }
+
+  void _startListeningForEntries() {
+    _appState.listenForEntries(); // Call _listenForEntries() from AppState
+  }
+
   @override
   bool get wantKeepAlive => true;
 
@@ -99,7 +112,7 @@ class _ProjectsPageState extends State<ProjectsPage>
   @override
   bool get wantKeepAlive => true;
 
-  Widget _listBuilder(BuildContext context, int index, List<Entry> entries) {
+  Widget _listBuilder(BuildContext context, int index, List<Project> entries) {
     return Padding(
       padding: const EdgeInsets.all(10.0),
       child: Column(
@@ -111,7 +124,7 @@ class _ProjectsPageState extends State<ProjectsPage>
                 context,
                 MaterialPageRoute(
                     builder: (context) => ProjectDetail(
-                        state: widget.state, entry: entries[index])),
+                        state: widget.state, project: entries[index])),
               );
             },
             child: Card(
@@ -126,26 +139,23 @@ class _ProjectsPageState extends State<ProjectsPage>
                               Icon(Icons.error),
                         )
                       : Text('Image not found'),
-                  Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: Column(
-                      children: [
-                        Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(entries[index].title,
-                              style: TextStyle(fontWeight: FontWeight.bold)),
-                        ),
-                        Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(entries[index].imageURL!,
-                              style: TextStyle(fontWeight: FontWeight.bold)),
-                        ),
-                        Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(entries[index].text),
-                        ),
-                      ],
-                    ),
+                  Column(
+                    children: [
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(entries[index].title,
+                            style: TextStyle(fontWeight: FontWeight.bold)),
+                      ),
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(entries[index].imageURL!,
+                            style: TextStyle(fontWeight: FontWeight.bold)),
+                      ),
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(entries[index].description),
+                      ),
+                    ],
                   ),
                 ],
               ),
@@ -158,7 +168,7 @@ class _ProjectsPageState extends State<ProjectsPage>
 
   Widget build(BuildContext context) {
     return SafeArea(
-      child: StreamBuilder<List<Entry>>(
+      child: StreamBuilder<List<Project>>(
           stream: widget.state.entries,
           initialData: const [],
           builder: (context, snapshot) {

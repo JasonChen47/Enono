@@ -9,7 +9,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:firebase_core/firebase_core.dart';
 
-import 'entry.dart';
+import 'project.dart';
 
 class AppState {
   // String imageUrl = '';
@@ -31,70 +31,69 @@ class AppState {
   // This will change to the type User from the Firebase Authentication package
   // Changing it’s type now would cause the app to throw an error
   User? user; // <-- changed variable type
-  Stream<List<Entry>> get entries => _entriesStreamController.stream;
-  late final StreamController<List<Entry>> _entriesStreamController;
+  Stream<List<Project>> get entries => _entriesStreamController.stream;
+  late final StreamController<List<Project>> _entriesStreamController;
 
   Future<void> logIn(String email, String password) async {
     final credential = await FirebaseAuth.instance
         .signInWithEmailAndPassword(email: email, password: password);
     if (credential.user != null) {
       user = credential.user!;
-      _listenForEntries();
+      listenForEntries();
     } else {
       print('no user!');
     }
   }
 
-  void writeEntryToFirebase(Entry entry) async {
-    // FirebaseFirestore.instance.collection('Entries').add(<String, String>{
-    //   'title': entry.title,
-    //   'date': entry.date.toString(),
-    //   'text': entry.text,
-    // });
-    if (entry.imageURL != null) {
+  void writeEntryToFirebase(Project project) async {
+    if (project.imageURL != null) {
       // Upload the image to Firebase Storage
       Reference storageReference = FirebaseStorage.instance
           .ref()
           .child('images')
-          .child(DateTime.now().toString() + 'entry_image.jpg');
-      UploadTask uploadTask = storageReference.putFile(File(entry.imageURL!));
+          .child(DateTime.now().toString() + 'project_image.jpg');
+      UploadTask uploadTask = storageReference.putFile(File(project.imageURL!));
       // Get the download URL of the uploaded image
       String imageUrl = await (await uploadTask).ref.getDownloadURL();
       print('get download URL');
       // Save entry details along with the image URL to Firestore
       await FirebaseFirestore.instance.collection('Entries').add({
-        'title': entry.title,
-        'date': entry.date.toString(),
-        'text': entry.text,
+        'title': project.title,
+        'date': project.date.toString(),
+        'description': project.description,
+        'skills': project.skills,
         'imageurl': imageUrl, // Save image URL in Firestore
       });
     } else {
       // If no image, save entry details without the image URL
       await FirebaseFirestore.instance.collection('Entries').add({
-        'title': entry.title,
-        'date': entry.date.toString(),
-        'text': entry.text,
+        'title': project.title,
+        'date': project.date.toString(),
+        'description': project.description,
+        'skills': project.skills,
       });
       print('added to collection');
     }
   }
 
-  Future<void> _listenForEntries() async {
+  Future<void> listenForEntries() async {
     FirebaseFirestore.instance
         .collection('Entries')
         .snapshots()
         .listen((event) {
       final entries = event.docs.map((doc) {
         final data = doc.data();
-        return Entry(
+        return Project(
           date: data['date'] as String,
-          text: data['text'] as String,
+          description: data['description'] as String,
           title: data['title'] as String,
+          skills: data['skills'] as List<dynamic>,
           imageURL: data['imageurl'] as String,
         );
       }).toList();
 
       _entriesStreamController.add(entries);
+      print(entries);
     });
   }
 }

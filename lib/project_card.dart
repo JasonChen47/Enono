@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-import 'entry.dart';
+import 'project.dart';
 
 class ProjectCard extends StatelessWidget {
-  final Entry entry;
+  final Project project;
 
-  const ProjectCard({super.key, required this.entry});
+  const ProjectCard({super.key, required this.project});
 
   @override
   Widget build(BuildContext context) {
@@ -19,21 +19,21 @@ class ProjectCard extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(top: 16.0),
               child: Text(
-                entry.title,
+                project.title,
                 style: Theme.of(context).textTheme.titleLarge,
               ),
             ),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 8.0),
               child: Text(
-                'Date: ${entry.date}',
+                'Date: ${project.date}',
                 style: Theme.of(context).textTheme.labelMedium,
               ),
             ),
             const Divider(),
             Expanded(
               child: Text(
-                entry.text,
+                project.description,
                 style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                       height: 1.3,
                       wordSpacing: 1.2,

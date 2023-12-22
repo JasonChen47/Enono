@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
+import 'package:textfield_tags/textfield_tags.dart';
 
-import 'entry.dart';
+import 'project.dart';
 import 'app_state.dart';
 
-typedef SubmitCallback = void Function(Entry);
+typedef SubmitCallback = void Function(Project);
 
 class ProjectForm extends StatefulWidget {
   final SubmitCallback onSubmit;
@@ -17,6 +18,19 @@ class ProjectForm extends StatefulWidget {
 
 class _ProjectFormState extends State<ProjectForm> {
   File? _imageFile;
+  late TextfieldTagsController _controller;
+  final _formKey = GlobalKey<FormState>();
+  late String title;
+  late String description;
+  late List<String> skills;
+  late String date;
+  late double _distanceToField;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _distanceToField = MediaQuery.of(context).size.width;
+  }
 
   Future<void> _getImageFromGallery() async {
     final imagePicker = ImagePicker();
@@ -29,11 +43,11 @@ class _ProjectFormState extends State<ProjectForm> {
     }
   }
 
-  final _formKey = GlobalKey<FormState>();
-
-  late String title;
-  late String text;
-  late String date;
+  @override
+  void initState() {
+    super.initState();
+    _controller = TextfieldTagsController();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -57,6 +71,108 @@ class _ProjectFormState extends State<ProjectForm> {
                   return null;
                 },
               ),
+              // Field tags for Skills
+              TextFieldTags(
+                textSeparators: const [' ', ','],
+                letterCase: LetterCase.normal,
+                validator: (String tag) {
+                  if (tag.isEmpty) {
+                    return 'Please enter some text';
+                  } else if (_controller.getTags!.contains(tag)) {
+                    return 'you already entered that';
+                  } else {
+                    skills = _controller.getTags! + [tag];
+                  }
+                  return null;
+                },
+                textfieldTagsController: _controller,
+                inputfieldBuilder:
+                    (context, tec, fn, error, onChanged, onSubmitted) {
+                  return ((context, sc, tags, onTagDelete) {
+                    return Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: TextField(
+                        controller: tec,
+                        focusNode: fn,
+                        decoration: InputDecoration(
+                          isDense: true,
+                          border: const OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Color.fromARGB(255, 74, 137, 92),
+                              width: 3.0,
+                            ),
+                          ),
+                          focusedBorder: const OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Color.fromARGB(255, 74, 137, 92),
+                              width: 3.0,
+                            ),
+                          ),
+                          helperText: 'Enter language...',
+                          helperStyle: const TextStyle(
+                            color: Color.fromARGB(255, 74, 137, 92),
+                          ),
+                          hintText: _controller.hasTags ? '' : "Enter tag...",
+                          errorText: error,
+                          prefixIconConstraints:
+                              BoxConstraints(maxWidth: _distanceToField * 0.74),
+                          prefixIcon: tags.isNotEmpty
+                              ? SingleChildScrollView(
+                                  controller: sc,
+                                  scrollDirection: Axis.horizontal,
+                                  child: Row(
+                                      children: tags.map((String tag) {
+                                    return Container(
+                                      decoration: const BoxDecoration(
+                                        borderRadius: BorderRadius.all(
+                                          Radius.circular(20.0),
+                                        ),
+                                        color: Color.fromARGB(255, 74, 137, 92),
+                                      ),
+                                      margin: const EdgeInsets.symmetric(
+                                          horizontal: 5.0),
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 10.0, vertical: 5.0),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          InkWell(
+                                            child: Text(
+                                              '$tag',
+                                              style: const TextStyle(
+                                                  color: Colors.white),
+                                            ),
+                                            onTap: () {
+                                              print("$tag selected");
+                                            },
+                                          ),
+                                          const SizedBox(width: 4.0),
+                                          InkWell(
+                                            child: const Icon(
+                                              Icons.cancel,
+                                              size: 14.0,
+                                              color: Color.fromARGB(
+                                                  255, 233, 233, 233),
+                                            ),
+                                            onTap: () {
+                                              onTagDelete(tag);
+                                            },
+                                          )
+                                        ],
+                                      ),
+                                    );
+                                  }).toList()),
+                                )
+                              : null,
+                        ),
+                        onChanged: onChanged,
+                        onSubmitted: onSubmitted,
+                      ),
+                    );
+                  });
+                },
+              ),
               TextFormField(
                 decoration:
                     const InputDecoration(labelText: 'Date (DD/MM/YYYY):'),
@@ -76,7 +192,7 @@ class _ProjectFormState extends State<ProjectForm> {
                   if (value == null || value.isEmpty) {
                     return 'Please enter some text';
                   }
-                  text = value;
+                  description = value;
                   return null;
                 },
               ),
@@ -100,14 +216,15 @@ class _ProjectFormState extends State<ProjectForm> {
                     onPressed: () {
                       // Validate returns true if the form is valid, or false otherwise.
                       if (_formKey.currentState!.validate()) {
-                        final entry = Entry(
+                        final project = Project(
                           title: title,
-                          text: text,
+                          description: description,
                           date: date,
+                          skills: skills,
                           imageURL: _imageFile!.path,
                         );
 
-                        widget.onSubmit(entry);
+                        widget.onSubmit(project);
 
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(content: Text('Processing Data')),

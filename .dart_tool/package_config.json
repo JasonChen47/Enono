@@ -476,6 +476,12 @@
       "languageVersion": "2.18"
     },
     {
+      "name": "textfield_tags",
+      "rootUri": "file:///Users/johnsmith/.pub-cache/hosted/pub.dev/textfield_tags-2.0.2",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "typed_data",
       "rootUri": "file:///Users/johnsmith/.pub-cache/hosted/pub.dev/typed_data-1.3.2",
       "packageUri": "lib/",
@@ -518,7 +524,7 @@
       "languageVersion": "3.1"
     }
   ],
-  "generated": "2023-12-16T05:28:45.417928Z",
+  "generated": "2023-12-20T22:16:05.059325Z",
   "generator": "pub",
   "generatorVersion": "3.1.5"
 }
